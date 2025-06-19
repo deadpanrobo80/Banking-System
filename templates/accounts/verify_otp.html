@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 p-5 bg-white rounded shadow-md">
+    <h2 class="text-2xl font-semibold text-center">OTP Verification</h2>
+    <form method="post" class="mt-5">
+        {% csrf_token %}
+        <label for="otp" class="block text-gray-700 text-sm font-bold mb-2">Enter OTP:</label>
+        <input type="text" name="otp" id="otp" required 
+               class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500" 
+               placeholder="Enter your OTP">
+        <button type="submit" class="mt-4 bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            Verify
+        </button>
+    </form>
+
+    {% if messages %}
+        <div class="mt-4">
+            {% for message in messages %}
+                <div class="text-red-600 text-sm italic">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

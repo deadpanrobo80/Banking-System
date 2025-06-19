@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 p-5 bg-white rounded shadow-md">
+    <h1 class="text-2xl font-semibold text-center">Welcome to Seamless Bank!</h1>
+    <p class="mt-5 text-gray-700">
+        Dear {{ user.username }},
+    </p>
+    <p class="text-gray-700">
+        Congratulations and welcome to Seamless Bank! We are thrilled to have you join our community.
+    </p>
+    <p class="text-gray-700">
+        Your registration was successful, and you can now explore all the exciting features we offer. Here are a few things you might want to check out:
+    </p>
+    <ul class="list-disc ml-5 text-gray-700">
+        <li>View your account balance</li>
+        <li>Transfer funds easily</li>
+        <li>Manage your profile settings</li>
+    </ul>
+    <p class="mt-4 text-gray-700">
+        If you have any questions, feel free to 
+        <a href="mailto:support@seamlessbank.com" class="text-blue-600 underline">contact our support team</a>. 
+        We’re here to help!
+    </p>
+    <p class="mt-4 text-gray-700">
+        Best regards,<br>
+        The Seamless Bank Team
+    </p>
+</div>
+{% endblock %}

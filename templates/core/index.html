@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block head_title %}Banking System{% endblock %}
+
+{% block content %}
+<div class="py-12">
+    <div class="container mx-auto flex flex-col md:flex-row items-center">
+        <!-- Logo Section -->
+        
+
+        <!-- Main Content Section -->
+        <div class="flex flex-col w-full lg:w-1/2 justify-center items-start pt-12 pb-24 px-6 bg-white rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <h1 class="font-bold text-4xl my-4 flex items-center">
+                <i class="fas fa-university mr-2 text-green-600"></i> Rover Banking System
+            </h1>
+            <p class="leading-normal mb-4 text-gray-700">
+                Welcome to your one-stop solution for banking needs. Enjoy a seamless experience with our user-friendly interface and robust features designed for your convenience.
+            </p>
+
+            <!-- Call to Action -->
+            <div class="flex justify-end w-full">
+                <a href="{% url 'accounts:user_registration' %}" class="bg-green-600 text-white rounded-lg hover:bg-green-500 transition duration-200 shadow-lg py-2 px-4 flex items-center transform hover:scale-105">
+                    <i class="fas fa-user-plus mr-2"></i> Register
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Features Section -->
+<div class="container mx-auto my-12">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Our Features</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-lock text-green-600 text-3xl mr-2"></i>
+                <h3 class="font-semibold text-lg text-gray-800">Secure Transactions</h3>
+            </div>
+            <p class="text-gray-600">Experience top-notch security with end-to-end encryption for all your transactions.</p>
+            <a href="#" class="text-green-600 hover:text-green-800 underline mt-2 inline-block">Learn More</a>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-bell text-green-600 text-3xl mr-2"></i>
+                <h3 class="font-semibold text-lg text-gray-800">Real-Time Notifications</h3>
+            </div>
+            <p class="text-gray-600">Stay updated with instant notifications on your account activities and transactions.</p>
+            <a href="#" class="text-green-600 hover:text-green-800 underline mt-2 inline-block">Learn More</a>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-headset text-green-600 text-3xl mr-2"></i>
+                <h3 class="font-semibold text-lg text-gray-800">24/7 Support</h3>
+            </div>
+            <p class="text-gray-600">Our customer support is always available to assist you with any queries or issues.</p>
+            <a href="#" class="text-green-600 hover:text-green-800 underline mt-2 inline-block">Learn More</a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer class="footer bg-gray-800 text-white border-t border-gray-700 mt-12">
+    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center">
+            <img src="{% static 'img/logo.png' %}" alt="Brand Logo" class="h-6 mr-2"> <!-- Adjust logo path as necessary -->
+            <p class="text-sm font-semibold">© {% now "Y" %} Rover Corporation.</p>
+        </div>
+        <div class="flex space-x-3 mt-2 md:mt-0">
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">Privacy</a>
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">Terms</a>
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">Contact</a>
+        </div>
+        <div class="flex space-x-2 mt-2 md:mt-0">
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" class="text-white hover:text-green-300 transition duration-200 text-sm">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

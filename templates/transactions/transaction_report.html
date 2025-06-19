@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+{% block head_title %}Transaction Report{% endblock %}
+{% block head_extra %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+{% endblock %}
+
+{% block content %}
+<div class="my-10 p-6 bg-white rounded-lg shadow-lg">
+    <h1 class="font-mono font-bold text-4xl text-center mb-5 text-gray-800">Transaction Report</h1>
+    <div class="flex justify-center mb-4">
+        <a href="{% url 'transactions:transaction_download' %}" class="btn btn-primary bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+            <i class="fas fa-download mr-2"></i> Download Transactions
+        </a>
+    </div>
+
+    <hr class="border-b-2 border-blue-900 mb-4" />
+    
+    <form method="get" id="filter" class="mb-4">
+        <div class="flex justify-center">
+            <div class="relative w-4/12">
+                <input type="search" name="daterange" id="search" placeholder="Filter using date range" class="appearance-none w-full border rounded-lg border-gray-300 px-4 py-3 focus:outline-none focus:ring focus:ring-blue-300 shadow-md" autocomplete="off" value="{{ request.GET.daterange }}" />
+                <button type="submit" class="absolute right-0 top-0 mt-2 mr-2">
+                    <i class="fas fa-search text-blue-600 hover:text-blue-700 transition-transform duration-300"></i>
+                </button>
+            </div>
+        </div>
+        {% if form.daterange.errors %}
+            {% for error in form.daterange.errors %}
+                <p class="text-red-600 text-sm italic">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+    </form>
+
+    <table class="table-auto mx-auto w-full mt-8 border-collapse rounded-lg overflow-hidden shadow-lg">
+        <thead class="bg-gray-800 text-white">
+            <tr class="uppercase font-semibold text-sm">
+                <th class="border border-gray-700 px-4 py-3">Transaction ID</th>
+                <th class="border border-gray-700 px-4 py-3">Date</th>
+                <th class="border border-gray-700 px-4 py-3">Transaction Type</th>
+                <th class="border border-gray-700 px-4 py-3">Amount</th>
+                <th class="border border-gray-700 px-4 py-3">Balance After Transaction</th>
+                <th class="border border-gray-700 px-4 py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in object_list %}
+            <tr class="{% cycle 'bg-gray-100' 'bg-white' %} hover:bg-blue-50 transition duration-300">
+                <td class="border border-gray-200 px-4 py-3 text-center">{{ transaction.id }}</td>
+                <td class="border border-gray-200 px-4 py-3 text-center">{{ transaction.timestamp|date:"F d, Y h:i A" }}</td>
+                <td class="border border-gray-200 px-4 py-3 text-center">{{ transaction.get_transaction_type_display }}</td>
+                <td class="border border-gray-200 px-4 py-3 text-right text-green-600 font-bold">$ {{ transaction.amount|floatformat:2|intcomma }}</td>
+                <td class="border border-gray-200 px-4 py-3 text-right text-blue-600 font-bold">$ {{ transaction.balance_after_transaction|floatformat:2|intcomma }}</td>
+                
+                </td>
+            </tr>
+
+
+            {% endfor %}
+            <tr class="bg-gray-600 text-white">
+                <th class="border border-gray-700 px-4 py-3 text-right" colspan="4">Current Balance</th>
+                <th class="border border-gray-700 px-4 py-3 text-right">$ {{ account.balance|floatformat:2|intcomma }}</th>
+                <th></th> <!-- Empty cell for Action column -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block footer_extra %}
+<script type="text/javascript">
+    var def_date = '{{ request.GET.daterange }}';
+    def_date = def_date == "" ? moment().format("Y-MM-DD") + " - " + moment().format("Y-MM-DD") : def_date;
+    var date_split = def_date.split(" - ");
+    var start_date = moment(date_split[0]).format("MM/DD/Y");
+    var end_date = moment(date_split[1]).format("MM/DD/Y");
+    console.log(start_date, end_date);
+
+    $(function() {
+        $('input[name="daterange"]').daterangepicker({
+            autoUpdateInput: false,
+            startDate: start_date,
+            endDate: end_date,
+            locale: {
+                cancelLabel: "Clear",
+            },
+            buttonClasses: 'bg-blue-500 text-white rounded-lg',
+        });
+
+        $('input[name="daterange"]').on("apply.daterangepicker", function(ev, picker) {
+            $(this).val(picker.startDate.format("YYYY-MM-DD") + " - " + picker.endDate.format("YYYY-MM-DD"));
+            $('#filter').submit();
+        });
+
+        $('input[name="daterange"]').on("cancel.daterangepicker", function(ev, picker) {
+            $(this).val("");
+            $('#filter').submit();
+        });
+    });
+</script>
+{% endblock %}

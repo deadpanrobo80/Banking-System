@@ -1,0 +1,14 @@
+<!-- supportticket_response.html -->
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Response to Ticket: {{ ticket.subject }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Automatically render the form fields with the defined widgets -->
+        <button type="submit" class="btn btn-success">Submit Response</button>
+    </form>
+    <a href="{% url 'admin:app_supportticket_changelist' %}">Back to Tickets</a>
+</div>
+{% endblock %}

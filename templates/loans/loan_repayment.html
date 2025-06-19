@@ -1,0 +1,99 @@
+{% extends 'core/base.html' %}
+{% block head_title %}Loan Application{% endblock %}
+{% block content %}
+
+<div class="container mx-auto flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-200 to-gray-100">
+    <h2 class="font-bold text-5xl my-4 text-gray-800">Loan Application</h2>
+    
+    {% if form.errors %}
+        <div class="alert alert-danger bg-red-200 text-red-800 p-4 rounded mb-4">
+            <strong>Please fix the following errors:</strong>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <form method="post" class="bg-white p-8 w-full max-w-md rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 backdrop-blur-md" onsubmit="showLoading()">
+        {% csrf_token %}
+        
+        <!-- Hidden field to store loan_id -->
+        <input type="hidden" name="loan_id" value="{{ loan_id }}"> <!-- Ensure loan_id is passed to the template -->
+
+        <div class="flex flex-col space-y-4">
+            {{ form.as_p }}  <!-- Render form fields -->
+            <button type="submit" class="bg-pink-600 text-white rounded-full hover:bg-white hover:text-pink-600 border border-pink-600 transition duration-300 shadow-lg py-2 px-4">Submit Application</button>
+        </div>
+    </form>
+    <div id="loading" class="hidden">Submitting...</div>
+</div>
+
+<div id="cursorLight" class="cursor-light"></div> <!-- Custom cursor light effect -->
+
+<script>
+    function showLoading() {
+        const loadingIndicator = document.getElementById('loading');
+        const submitButton = document.querySelector('button[type="submit"]');
+        loadingIndicator.classList.remove('hidden');
+        submitButton.disabled = true; // Disable button to prevent multiple submissions
+    }
+
+    // Cursor light effect
+    const cursorLight = document.getElementById('cursorLight');
+    document.addEventListener('mousemove', (e) => {
+        cursorLight.style.left = `${e.pageX}px`;
+        cursorLight.style.top = `${e.pageY}px`;
+    });
+</script>
+
+<style>
+    /* Cursor light effect styles */
+    .cursor-light {
+        position: fixed;
+        width: 24px;
+        height: 24px;
+        background-color: rgba(16, 48, 138, 0.966); /* Custom color */
+        border-radius: 50%;
+        pointer-events: none; /* Prevent interaction */
+        transform: translate(-50%, -50%); /* Center the light */
+        box-shadow: 0 0 20px rgba(16, 48, 138, 0.966);
+        transition: transform 0.1s ease-out;
+    }
+
+    /* Body styles */
+    body {
+        background: linear-gradient(to right, #f3f4f6, #ffffff); /* Light gradient background */
+        font-family: 'Roboto', sans-serif; /* Clean font */
+    }
+
+    /* Form styles */
+    form {
+        border-radius: 1rem; /* Rounded corners */
+        padding: 30px; /* Inner padding */
+        transition: box-shadow 0.3s ease;
+    }
+
+    /* Effect when hovering over the form */
+    form:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Subtle shadow effect */
+    }
+
+    /* Button styles */
+    button {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        padding: 10px 20px; /* Inner padding for the button */
+        border-radius: 50px; /* Fully rounded button */
+    }
+
+    button:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hover shadow effect */
+    }
+</style>
+{% endblock %}

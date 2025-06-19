@@ -1,0 +1,117 @@
+{% extends 'core/base.html' %}
+{% block head_title %}{{ title }}{% endblock %}
+{% block content %}
+
+<div class="w-full flex mt-5 justify-center">
+    <div class="bg-white rounded-lg shadow-lg w-5/12 p-6 transition-transform transform hover:scale-105">
+        <h1 class="font-mono font-bold text-3xl text-center pb-5">{{ title }}</h1>
+        <hr class="border-b-2 border-blue-900 mb-4" />
+
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-900 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" title="Date of the transaction">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" title="Type of transaction">Transaction Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" title="Amount of the transaction">Amount</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" title="Remaining balance after transaction">Balance After Transaction</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% if transactions %}
+                    {% for transaction in transactions %}
+                    <tr class="hover:bg-blue-100 transition duration-200 ease-in-out transform hover:scale-105">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ transaction.date }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ transaction.transaction_type }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-green-600 font-bold">${{ transaction.amount }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-blue-600 font-bold">${{ transaction.balance_after_transaction }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center px-6 py-4">No transactions found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <div class="flex w-full justify-center mt-5 space-x-4">
+            <a href="{% url 'transactions:deposit' %}" class="bg-blue-900 text-white hover:bg-blue-700 transition duration-300 shadow-md rounded-lg font-bold px-4 py-2 transform hover:scale-105" title="Deposit funds into your account">Deposit</a>
+            <a href="{% url 'transactions:withdraw' %}" class="bg-blue-900 text-white hover:bg-blue-700 transition duration-300 shadow-md rounded-lg font-bold px-4 py-2 transform hover:scale-105" title="Withdraw funds from your account">Withdraw</a>
+            <a href="{% url 'transactions:transfer' %}" class="bg-blue-900 text-white hover:bg-blue-700 transition duration-300 shadow-md rounded-lg font-bold px-4 py-2 transform hover:scale-105" title="Transfer funds to another account">Transfer Funds</a>
+        </div>
+
+        <div id="loading" class="hidden flex items-center justify-center mt-4">
+            <div class="loader"></div>
+            <span class="ml-2 text-gray-700">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom styles for vibrant colors and dynamic effects */
+    body {
+        background: linear-gradient(135deg, #e2e8f0, #cbd5e1); /* Softer gradient for the background */
+        font-family: 'Arial', sans-serif; /* Modern font */
+    }
+
+    table {
+        border-radius: 0.5rem; /* Rounded corners for table */
+        overflow: hidden; /* Hide overflow */
+    }
+
+    th {
+        border-bottom: 2px solid #e2e8f0; /* Light gray for header border */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    }
+
+    th:hover {
+        background-color: rgba(0, 0, 0, 0.05); /* Slight hover effect on headers */
+        color: #007BFF; /* Change text color on hover */
+    }
+
+    td {
+        transition: background-color 0.2s ease; /* Smooth transition for cell hover */
+    }
+
+    tr:hover td {
+        background-color: rgba(0, 123, 255, 0.1); /* Light blue on row hover */
+        transform: scale(1.02); /* Slight scaling effect on hover */
+    }
+
+    hr {
+        margin: 10px 0; /* Space around the horizontal line */
+    }
+
+    /* Loading spinner styles */
+    .loader {
+        border: 4px solid rgba(255, 255, 255, 0.2); /* Light gray border */
+        border-top: 4px solid #4fa94d; /* Green top */
+        border-radius: 50%; /* Circular shape */
+        width: 30px; /* Width of the loader */
+        height: 30px; /* Height of the loader */
+        animation: spin 1s linear infinite; /* Animation */
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive design for smaller screens */
+    @media (max-width: 768px) {
+        .w-5 {
+            width: 90%; /* Full width on smaller screens */
+        }
+    }
+</style>
+
+<script>
+    // Show loading spinner function
+    function showLoading() {
+        document.getElementById('loading').classList.remove('hidden');
+    }
+
+    // You can call the showLoading function at the appropriate time
+</script>
+
+{% endblock %}

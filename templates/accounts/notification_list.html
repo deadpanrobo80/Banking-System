@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #071550;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #071550;
+            color: white;
+        }
+
+        .notification {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .read {
+            background-color: #e0e0e0; /* Light gray for read notifications */
+        }
+
+        .unread {
+            background-color: #071550; /* Light green for unread notifications */
+        }
+
+        .mark-as-read {
+            background-color: #071550;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .mark-as-read:hover {
+            background-color:#071550;
+        }
+
+        .back-button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Notifications</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notification in notifications %}
+                <tr class="notification {% if notification.is_read %}read{% else %}unread{% endif %}" id="notification-{{ notification.id }}">
+                    <td>{{ notification.message }}</td>
+                    <td>{{ notification.timestamp }}</td>
+                    <td>
+                        {% if not notification.is_read %}
+                            <form action="{% url 'accounts:mark_notification_as_read' notification.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="mark-as-read">Mark as Read</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Back button to return to the previous page -->
+    <button onclick="window.history.back();" class="back-button">Go Back</button>
+</body>
+</html>

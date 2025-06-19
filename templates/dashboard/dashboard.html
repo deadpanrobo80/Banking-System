@@ -1,0 +1,55 @@
+<!-- transactions/templates/transactions/dashboard.html -->
+
+{% extends "core/base.html" %}  <!-- Assuming you have a base template -->
+
+{% block content %}
+<!-- Include Bootstrap CSS (make sure you have Bootstrap linked in your base.html) -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <div class="dashboard">
+        <h1 class="text-center">Welcome, {{ first_name }} {{ last_name }}!</h1>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Account Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Account Number:</strong> <span id="account-number">{{ account_number }}</span></p>
+                <p><strong>Email:</strong> <span id="user-email">{{ email }}</span></p>
+            </div>
+        </div>
+
+        <!-- Add other dashboard features/links here -->
+        <div class="mt-4">
+            <h5>Quick Links</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{% url 'transactions:deposit' %}">Deposit Funds</a></li>
+                <li class="list-group-item"><a href="{% url 'transactions:withdraw' %}">Withdraw Funds</a></li>
+                <li class="list-group-item"><a href="{% url 'transactions:transfer' %}">Transfer Funds</a></li>
+                <li class="list-group-item"><a href="{% url 'loans:apply' %}">Apply for Loan</a></li>
+                <li class="list-group-item"><a href="{% url 'loans:report' %}">Loan Report</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Include Bootstrap JS and jQuery for interactive components -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Optional: Add dynamic updates (e.g., fetching data with AJAX)
+    $(document).ready(function() {
+        // Example: Fetch and display account balance dynamically
+        fetch('/api/account/balance/')
+            .then(response => response.json())
+            .then(data => {
+                // Update the balance displayed on the dashboard
+                $('#account-balance').text(data.balance);
+            });
+    });
+</script>
+
+{% endblock %}

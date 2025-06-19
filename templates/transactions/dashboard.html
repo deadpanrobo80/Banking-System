@@ -1,0 +1,107 @@
+{% extends "core/base.html" %} <!-- Assuming you have a base template -->
+
+{% block content %}
+<!-- Include Bootstrap CSS (ensure Bootstrap is linked in your base.html) -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome for icons -->
+
+<div class="container-fluid bg-light p-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Welcome, {{ first_name }} {{ last_name }}!</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Account Details Section -->
+        <div class="col-md-6">
+            <div class="bg-white rounded p-4 shadow-sm" style="border-radius: 1rem;">
+                <h4 class="mb-4 text-center text-primary">Account Details</h4>
+                <div class="mb-4">
+                    <label class="font-weight-bold"><i class="fas fa-id-card"></i> Account Number:</label>
+                    <p id="account-number" class="text-muted">{{ account_number }}</p>
+                </div>
+                <div class="mb-4">
+                    <label class="font-weight-bold"><i class="fas fa-envelope"></i> Email:</label>
+                    <p id="user-email" class="text-muted">{{ email }}</p>
+                </div>
+                <div class="mb-4">
+                    <label class="font-weight-bold"><i class="fas fa-dollar-sign"></i> Balance:</label>
+                    <p id="account-balance" class="text-muted"><i class="fas fa-spinner fa-spin"></i> Loading...</p> <!-- Initial loader animation -->
+                </div>
+                <div class="text-center">
+                    <small class="text-muted">Last updated: <span id="last-updated">{{ current_time }}</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and jQuery for interactive components -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Add dynamic updates (e.g., fetching data with AJAX)
+    $(document).ready(function() {
+        // Fetch and display account balance dynamically
+        fetch('{% url "transactions:get_account_balance" %}')
+            .then(response => response.json())
+            .then(data => {
+                // Update the balance with a fade-in effect
+                $('#account-balance').fadeOut(200, function() {
+                    $(this).text(`$${data.balance}`).fadeIn(400);
+                });
+
+                // Update the last-updated time dynamically
+                const now = new Date();
+                const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                $('#last-updated').text(formattedTime);
+            });
+    });
+</script>
+
+<!-- Add custom styles and effects -->
+<style>
+    body {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        font-family: Arial, sans-serif;
+    }
+
+    /* Card-like section without boxes */
+    .bg-white {
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .bg-white:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Loader spinner */
+    .fa-spinner {
+        animation: spinner 1s linear infinite;
+    }
+
+    @keyframes spinner {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Responsive font size */
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h4 {
+        font-size: 1.5rem;
+    }
+
+    /* Center the text and enhance readability */
+    .text-muted {
+        font-size: 1.2rem;
+    }
+</style>
+
+{% endblock %}

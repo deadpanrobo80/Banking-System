@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Flag Transaction</h2>
+
+<form method="POST" action="{% url 'flag_transactions' transaction.id %}">
+    {% csrf_token %}
+    <div>
+        <label for="reason">Reason for flagging this transaction:</label>
+        <textarea name="reason" id="reason" required></textarea>
+    </div>
+    <div>
+        <button type="submit" {% if transaction.flagged %} disabled {% endif %}>
+            Flag Transaction
+        </button>
+    </div>
+</form>
+
+{% if transaction.flagged %}
+    <p>This transaction has already been flagged for fraud.</p>
+{% endif %}
+
+{% endblock %}
+<!-- transactions/templates/transactions/flag_transaction.html -->

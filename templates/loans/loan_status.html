@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block head_title %}Loan Status{% endblock %}
+{% block content %}
+<div class="container mx-auto flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-4xl font-bold text-gray-800">Loan Status</h1>
+    <div class="mt-4">
+        {% if loans %}
+            <ul class="space-y-4">
+                {% for loan in loans %}
+                    <li class="border p-4 rounded shadow">
+                        <h2 class="font-bold">Loan Amount: {{ loan.amount }}</h2>
+                        <p>Status: <span class="text-gray-600">{{ loan.get_status_display }}</span></p>
+                        <p>Created At: {{ loan.created_at }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have no active loans.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

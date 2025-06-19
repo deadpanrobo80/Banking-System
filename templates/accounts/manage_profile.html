@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 p-5 bg-white rounded shadow-md">
+    <h2 class="text-2xl font-semibold text-center">Manage Profile</h2>
+    <a href="{% url 'accounts:manage_profile' %}">Manage Profile</a>
+
+    <form method="post" class="mt-5" id="profileForm">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="mb-4">
+                <label for="{{ field.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ field.label }}
+                </label>
+                {{ field }}  <!-- Render the field directly -->
+                
+                {% for error in field.errors %}
+                    <div class="text-red-600 text-sm italic">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" id="submitBtn" class="mt-4 bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            Update Profile
+        </button>
+    </form>
+
+    <script>
+        const form = document.getElementById('profileForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Updating...';
+        });
+    </script>
+
+    {% if messages %}
+        <div class="mt-4">
+            {% for message in messages %}
+                <div class="{% if message.tags %}text-green-600{% else %}text-red-600{% endif %} text-sm italic">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
