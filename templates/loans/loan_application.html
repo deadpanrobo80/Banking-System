@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+{% block head_title %}Apply for Loan{% endblock %}
+{% block content %}
+<div class="container mx-auto flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-200 to-gray-100">
+    <h1 class="font-bold text-5xl my-4 text-gray-800">Apply for a Loan</h1>
+    <form id="loanForm" method="post" class="relative bg-transparent p-6 w-full max-w-md transition-transform duration-300 hover:scale-105 backdrop-blur-md" onsubmit="showLoading()">
+        {% csrf_token %}
+        <div class="flex flex-col space-y-4">
+            {{ form.as_p }}
+            <button id="submitButton" type="submit" class="bg-pink-600 text-white rounded-full hover:bg-white hover:text-pink-600 border border-pink-600 transition duration-300 shadow-lg py-2 px-4">Submit Application</button>
+        </div>
+    </form>
+    <div id="message" class="mt-4 hidden"></div>
+    <div id="loading" class="hidden">Submitting...</div>
+</div>
+
+<div id="cursorLight" class="cursor-light"></div> <!-- Custom cursor light effect -->
+
+<script>
+    function showLoading() {
+        const loadingIndicator = document.getElementById('loading');
+        const submitButton = document.getElementById('submitButton');
+        loadingIndicator.classList.remove('hidden');
+        submitButton.disabled = true; // Disable button to prevent multiple submissions
+    }
+
+    document.getElementById('loanForm').addEventListener('submit', function(event) {
+        const isValid = true; // Add your validation logic here
+        if (!isValid) {
+            event.preventDefault();
+            showMessage('Please fill out all required fields correctly.', 'error');
+        }
+    });
+
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.classList.remove('hidden');
+        messageDiv.classList.add(type === 'error' ? 'text-red-500' : 'text-green-500');
+        messageDiv.textContent = message;
+    }
+
+    // Cursor light effect
+    const cursorLight = document.getElementById('cursorLight');
+    document.addEventListener('mousemove', (e) => {
+        cursorLight.style.left = `${e.pageX}px`;
+        cursorLight.style.top = `${e.pageY}px`;
+    });
+</script>
+
+<style>
+    /* Cursor light effect styles */
+    .cursor-light {
+        position: fixed;
+        width: 24px;
+        height: 24px;
+        background-color: rgba(16, 48, 138, 0.966); /* Pink color */
+        border-radius: 50%;
+        pointer-events: none; /* Prevent interaction */
+        transform: translate(-50%, -50%); /* Center the light */
+        box-shadow: 0 0 20px rgba(16, 48, 138, 0.966);
+        transition: transform 0.1s ease-out;
+    }
+
+    /* Body styles */
+    body {
+        background: linear-gradient(to right, #f3f4f6, #ffffff); /* Light gradient background */
+        font-family: 'Roboto', sans-serif; /* Clean font */
+    }
+
+    /* Form styles */
+    form {
+        border-radius: 1rem; /* Rounded corners */
+        padding: 30px; /* Inner padding */
+        transition: box-shadow 0.3s ease;
+    }
+
+    /* Effect when hovering over the form */
+    form:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Subtle shadow effect */
+    }
+
+    /* Button styles */
+    button {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        padding: 10px 20px; /* Inner padding for the button */
+        border-radius: 50px; /* Fully rounded button */
+    }
+
+    button:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hover shadow effect */
+    }
+
+    /* Message styles */
+    #message {
+        transition: opacity 0.5s ease;
+        opacity: 0; /* Hidden by default */
+    }
+
+    #message:not(.hidden) {
+        opacity: 1; /* Fade in message */
+    }
+</style>
+{% endblock %}
